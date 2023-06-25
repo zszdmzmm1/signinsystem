@@ -15,7 +15,7 @@ public class PlayerSerives implements IPlayerSerives {
     private SignInMessage signInMessage = new SignInMessage();
     private Map<String, Player> playerMap = new HashMap<>();
     private List<String> signInDate = new ArrayList<>();
-    private GiftFile giftFile =new GiftFile();
+    private GiftFile giftFile = new GiftFile();
 
 
     @Override
@@ -43,7 +43,6 @@ public class PlayerSerives implements IPlayerSerives {
         } else {
 
 
-
             if (player.equals(playerMap.get(name))) {
                 return new MessageDTO(10000, player, "登录成功。");
             } else {
@@ -62,7 +61,15 @@ public class PlayerSerives implements IPlayerSerives {
         String sNow = DateUtil.now().substring(0, 10);
         String yestoday = DateUtil.yesterday().toString().substring(0, 10);
         String name = player.getName();
-        if (signInDate.contains(name + sNow)) {
+        boolean b = false;
+        for (Object s : signInDate) {
+            ArrayList arrayList=  (ArrayList)s;
+            if (arrayList.get(0).equals(name + sNow)) {
+                b = true;
+                break;
+            }
+        }
+        if (b) {
             System.out.println("请勿重复签到。");
         } else {
             player.setDay(player.getDay() + 1);
@@ -82,9 +89,9 @@ public class PlayerSerives implements IPlayerSerives {
     @Override
     public void getGift(Player player) throws IOException {
         int day = player.getDay();
-        if (day == 3 || day == 7 || day == 30) {
+        if (day == 1 || day == 7 || day == 30) {
             System.out.println("你已经连续签到" + day + "天，恭喜你获得额外奖励。");
-            player.getBag().getGifts().add(giftFile.findGift(day));
+            player.getBag().getGifts().add(giftFile.findGift(day).get(0));
         }
         if (day == 30) {
             player.setDay(0);

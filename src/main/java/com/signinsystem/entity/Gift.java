@@ -70,14 +70,14 @@ public class Gift {
         return Objects.hash(name);
     }
 
-    @Override
-    public String toString() {
+/*    @Override
+*//*    public String toString() {
         return "Gift{" +
-                "name='" + name + '\'' +
-                ", attack=" + attack +
-                ", defence=" + defence +
-                ", hP=" + hP +
-                ", iD=" + iD +
+                "name:'" + name + '\'' +
+                ", attack:" + attack +
+                ", defence:" + defence +
+                ", hP:" + hP +
+                ", iD:" + iD +
                 '}';
-    }
+    }*/
 }

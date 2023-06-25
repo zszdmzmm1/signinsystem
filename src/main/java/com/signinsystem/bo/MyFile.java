@@ -1,5 +1,6 @@
 package com.signinsystem.bo;
 
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.google.gson.Gson;
@@ -19,10 +20,12 @@ public class MyFile {
         byte[] bFile = sFile.getBytes();
         OutputStream outputStream = new FileOutputStream(file);
         outputStream.write(bFile);
+
+
     }
 
     public void collectionToJson(Map source, File file) throws IOException {
-        String sFile = JSONUtil.toJsonStr(source);
+        String sFile = gson.toJson(source);
         byte[] bFile = sFile.getBytes();
         OutputStream outputStream = new FileOutputStream(file);
         outputStream.write(bFile);
@@ -39,13 +42,18 @@ public class MyFile {
         return toSource;
     }
 
-    public List jsonToCollection(File file, List toSource) throws IOException {
-        InputStream inputStream = new FileInputStream(file);
-        byte[] bFile = new byte[(int) file.length()];
-        inputStream.read(bFile);
-        String sFile = new String(bFile);
-        toSource = gson.fromJson(sFile, List.class);
+/*    public List<Gift> jsonToCollection1(File file, List<Gift> toSource) throws IOException {
+        JSONArray jsonArray = JSONUtil.readJSONArray(file, StandardCharsets.UTF_8);
+        for (Object object : jsonArray) {
+            JSONObject playerJson = (JSONObject) object;
+            Gift gift = playerJson.toBean(Gift.class);
+            toSource.add(gift);
+        }
         return toSource;
+    }*/
+    public List jsonToCollection(File file, Class cls) throws IOException {
+        JSONArray jsonArray = JSONUtil.readJSONArray(file, StandardCharsets.UTF_8);
+        return JSONUtil.toList(jsonArray, cls);
     }
 
     public void fileCreate(File file) throws IOException {
